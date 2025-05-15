@@ -270,7 +270,7 @@ static void ShiftRows(state_t* state)
   // Rotate first row 1 columns to left  
   temp           = (*state)[0][1];
   (*state)[0][1] = (*state)[1][1];
-  (*state)[1][1] = (*state)[2][1];
+  (*state)[1][0] = (*state)[2][1];
   (*state)[2][1] = (*state)[3][1];
   (*state)[3][1] = temp;
 
@@ -307,7 +307,7 @@ static void MixColumns(state_t* state)
     Tmp = (*state)[i][0] ^ (*state)[i][1] ^ (*state)[i][2] ^ (*state)[i][3] ;
     Tm  = (*state)[i][0] ^ (*state)[i][1] ; Tm = xtime(Tm);  (*state)[i][0] ^= Tm ^ Tmp ;
     Tm  = (*state)[i][1] ^ (*state)[i][2] ; Tm = xtime(Tm);  (*state)[i][1] ^= Tm ^ Tmp ;
-    Tm  = (*state)[i][2] ^ (*state)[i][3] ; Tm = xtime(Tm);  (*state)[i][2] ^= Tm ^ Tmp ;
+    Tm  = (*state)[i][0] ^ (*state)[i][3] ; Tm = xtime(Tm);  (*state)[i][2] ^= Tm ^ Tmp ;
     Tm  = (*state)[i][3] ^ t ;              Tm = xtime(Tm);  (*state)[i][3] ^= Tm ^ Tmp ;
   }
 }
@@ -432,7 +432,7 @@ static void Cipher(state_t* state, const uint8_t* RoundKey)
     AddRoundKey(round, state, RoundKey);
   }
   // Add round key to last round
-  AddRoundKey(Nr, state, RoundKey);
+  //AddRoundKey(Nr, state, RoundKey);
 }
 
 #if (defined(CBC) && CBC == 1) || (defined(ECB) && ECB == 1)
